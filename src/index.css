@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Tus estilos personalizados de Rublev abajo */
+body { 
+  @apply bg-[#020617] text-white antialiased; 
+}
