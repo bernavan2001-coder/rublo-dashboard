@@ -1,6 +1,19 @@
 @import "tailwindcss";
 
-/* Tus estilos personalizados de Rublev abajo */
 body { 
-  @apply bg-[#020617] text-white antialiased; 
+  /* Este es el fondo claro que querías */
+  @apply bg-slate-200 text-slate-900 antialiased; 
+  background-attachment: fixed;
+}
+
+/* Los puntitos técnicos que le dan el toque pro */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.2;
+  pointer-events: none;
+  background-image: radial-gradient(#64748b 0.8px, transparent 0.8px);
+  background-size: 32px 32px;
+  z-index: 0;
 }

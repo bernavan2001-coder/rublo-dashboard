@@ -100,7 +100,7 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
                   <span className="text-[10px] font-black text-red-500 uppercase tracking-[0.5em]">Global Ranking Unit</span>
                 </div>
                 <h1 className="text-7xl font-black italic uppercase tracking-tighter text-white leading-none">
-                  {profile.first_name} <span className="text-white/20">{profile.last_name}</span>
+                  {profile.first_name} <span className="text-[#FF0000]">{profile.last_name}</span>
                 </h1>
                 <p className="text-[11px] font-bold text-white/30 uppercase tracking-[0.4em] pt-2">Advanced Performance Dashboard</p>
               </div>
@@ -187,9 +187,9 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
                   className={`group px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 relative flex items-center gap-3
-                    ${isActive ? item.text : 'text-white/50 hover:text-white/80'}`}
+                    ${isActive ? item.text : 'text-white hover:text-white/80'}`}
                 >
-                  <span className={`transition-colors duration-300 ${isActive ? '' : 'text-white/30 group-hover:text-white/60'}`}>
+                  <span className={`transition-colors duration-300 ${isActive ? '' : 'text-[#FF0000] group-hover:text-white/60'}`}>
                     {item.icon}
                   </span>
                   <span className="relative z-10">{item.label}</span>

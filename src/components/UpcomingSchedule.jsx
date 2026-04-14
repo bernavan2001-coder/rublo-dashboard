@@ -43,13 +43,13 @@ const UpcomingSchedule = ({ setActiveTab }) => {
             <div className="h-[2px] w-8 bg-white"></div>
             <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em]">Upcoming Unit</span>
           </div>
-          <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white leading-none">
-            NEXT <span className="text-white/20">CHALLENGES.</span>
+          <h3 className="text-3xl font-black italic uppercase tracking-tighter text-[#FF0000] leading-none">
+            NEXT <span className="text-[#FF0000]">CHALLENGES.</span>
           </h3>
         </div>
         <button 
           onClick={() => setActiveTab('calendar')}
-          className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] flex items-center gap-1.5 hover:text-white transition-colors group"
+          className="text-[10px] font-black text-[#FF0000] uppercase tracking-[0.3em] flex items-center gap-1.5 hover:text-white transition-colors group"
         >
           Full Schedule 2026 <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
         </button>

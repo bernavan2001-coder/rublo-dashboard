@@ -168,7 +168,7 @@ const SeasonOverview = ({ setActiveTab }) => {
             <Activity size={14} className="text-red-600" />
             Current Session 2026
           </div>
-          <button onClick={() => setActiveTab('results')} className="group flex items-center gap-2 text-slate-900 font-black italic uppercase text-[9px] tracking-widest hover:text-red-600 transition-colors">
+          <button onClick={() => setActiveTab('results')} className="group flex items-center gap-2 text-[#FF0000] font-black italic uppercase text-[9px] tracking-widest hover:text-red-600 transition-colors">
             Full Results View <ChevronRight size={14} className="group-hover:translate-x-1" />
           </button>
         </footer>
