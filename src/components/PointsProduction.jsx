@@ -16,7 +16,18 @@ const PointsProduction = () => {
       if (error) {
         console.error('Error fetching points production:', error);
       } else {
-        setProduction(data || []);
+        // --- LÓGICA DE ÚLTIMO REGISTRO (SIN SUMAR) ---
+        // Esto evita que Barcelona sume +50 +100 y te dé 150. 
+        // Solo agarra el registro más reciente.
+        const filtered = (data || []).reduce((acc, current) => {
+          const exists = acc.find(item => item.tournament_name === current.tournament_name);
+          if (!exists) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+
+        setProduction(filtered);
       }
       setLoading(false);
     };
@@ -24,6 +35,7 @@ const PointsProduction = () => {
     fetchProduction();
   }, []);
 
+  // Calculamos el total sobre la lista ya consolidada
   const totalPoints = production.reduce((acc, curr) => acc + curr.points_earned, 0);
 
   if (loading) return (
@@ -49,7 +61,6 @@ const PointsProduction = () => {
             <Zap size={24} className="text-white" />
           </div>
           <div>
-            {/* Color diferenciado para el título */}
             <h3 className="text-4xl font-black italic uppercase tracking-tighter text-red-600 leading-none">
               CURRENT POINTS <span className="text-slate-400 block text-2xl mt-1 tracking-normal not-italic font-bold">2026 PERFORMANCE</span>
             </h3>
@@ -82,7 +93,7 @@ const PointsProduction = () => {
           <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest">A. Rublev Stats</span>
         </div>
 
-        {/* LISTADO */}
+        {/* LISTADO CONSOLIDADO */}
         <div className="divide-y divide-slate-100">
           {production.length > 0 ? (
             production.map((t) => (
@@ -90,7 +101,6 @@ const PointsProduction = () => {
                    className="group flex items-center p-5 bg-white hover:bg-slate-50/80 transition-all relative overflow-hidden">
                 
                 <div className="flex items-center gap-6 flex-1 relative z-10">
-                  {/* Logo Unit */}
                   <div className="w-14 h-14 flex items-center justify-center bg-white border border-slate-100 p-2 shrink-0 group-hover:border-red-600/30 shadow-sm transition-all duration-500">
                     {t.tournament_logo_url ? (
                       <img src={t.tournament_logo_url} alt="logo" className="max-w-full max-h-full object-contain mix-blend-multiply" />
@@ -111,7 +121,6 @@ const PointsProduction = () => {
                   </div>
                 </div>
 
-                {/* Data Column */}
                 <div className="text-right pr-6">
                   <div className="flex items-center justify-end gap-4">
                     <TrendingUp size={20} className="text-emerald-500 group-hover:translate-y-[-2px] transition-transform" />
@@ -121,7 +130,6 @@ const PointsProduction = () => {
                   </div>
                 </div>
 
-                {/* Línea de acento al hover */}
                 <div className="absolute left-0 top-0 w-1.5 h-full bg-transparent group-hover:bg-red-600 transition-colors"></div>
               </div>
             ))
