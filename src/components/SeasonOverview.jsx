@@ -129,13 +129,47 @@ const SeasonOverview = ({ setActiveTab }) => {
             </div>
           </div>
 
-          {lastMatch.stats && (
-            <button onClick={() => { setSelectedStats(lastMatch.stats); setShowStatsModal(true); }}
-                    className="w-full bg-white/40 backdrop-blur-md border border-slate-200 py-2.5 flex items-center justify-center gap-3 group hover:bg-slate-950 transition-all rounded-sm shadow-sm">
-              <BarChart2 size={14} className="text-red-600" />
-              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-900 group-hover:text-white">Analysis Data [+]</span>
-            </button>
-          )}
+          {/* --- BOTONES DE ACCIÓN: STATS & RESULTS --- */}
+<div className="flex gap-2 mt-4">
+  {/* Botón Match Stats (Abre el Modal) */}
+  {lastMatch.stats && (
+    <button 
+      onClick={() => { setSelectedStats(lastMatch.stats); setShowStatsModal(true); }}
+      className="flex-1 bg-white/40 backdrop-blur-md border border-slate-200 py-3 flex items-center justify-center gap-3 group hover:bg-slate-950 transition-all rounded-sm shadow-sm"
+    >
+      <BarChart2 size={14} className="text-red-600" />
+      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-900 group-hover:text-white">
+        Match Stats [+]
+      </span>
+    </button>
+  )}
+
+  {/* Botón Match Results (Redirige al Timeline) */}
+  <button 
+    onClick={() => {
+      // 1. Cambiamos a la pestaña donde está el SeasonResultsTimeline
+      setActiveTab('results'); // Asegúrate que 'results' sea el ID de tu tab del timeline
+      
+      // 2. Guardamos el torneo en el storage para que el Timeline sepa a dónde scrollear
+      localStorage.setItem('targetTournament', lastMatch.tournament_name);
+      
+      // 3. Opcional: Pequeño delay para asegurar que el componente cargue antes de scrollear
+      setTimeout(() => {
+        const element = document.getElementById(lastMatch.tournament_name);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          element.classList.add('bg-slate-50/50'); // Efecto de resaltado temporal
+        }
+      }, 100);
+    }}
+    className="flex-1 bg-slate-50/60 backdrop-blur-md border border-slate-200 py-3 flex items-center justify-center gap-3 group hover:bg-red-600 transition-all rounded-sm shadow-sm"
+  >
+    <Activity size={14} className="text-slate-400 group-hover:text-white" />
+    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-900 group-hover:text-white">
+      Match Results
+    </span>
+  </button>
+</div>
         </div>
       </div>
 

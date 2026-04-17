@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { 
   Trophy, MapPin, User, Ruler, Star, Globe, 
   ExternalLink, ChevronRight, Zap, Swords, 
-  Heart, LayoutDashboard, Calendar, BarChart3, 
+  Heart, LayoutDashboard, Calendar, ListChecks, 
   Medal, Smile, Activity, Target 
 } from 'lucide-react'; 
 
@@ -11,10 +11,11 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
   const [profile, setProfile] = useState(null);
   const RUSSIA_FLAG = "https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg";
 
+  // --- NAVEGACIÓN ACTUALIZADA: Analysis -> Match Results ---
   const navigation = [
     { id: 'stats', label: 'Dashboard', icon: <LayoutDashboard size={14} />, color: 'bg-white', text: 'text-white' },
     { id: 'calendar', label: 'Schedule', icon: <Calendar size={14} />, color: 'bg-white', text: 'text-white' },
-    { id: 'ranking', label: 'Analysis', icon: <BarChart3 size={14} />, color: 'bg-white', text: 'text-white' },
+    { id: 'results', label: ' Results', icon: <ListChecks size={14} />, color: 'bg-white', text: 'text-white' }, // <--- Cambiado id a 'results'
     { id: 'h2h', label: 'H2H', icon: <Swords size={14} />, color: 'bg-[#FF0000]', text: 'text-[#FF0000]' }, 
     { id: 'titles', label: 'Honours', icon: <Medal size={14} />, color: 'bg-white', text: 'text-white' },
     { id: 'mood', label: 'Rublo', icon: <Smile size={14} />, color: 'bg-white', text: 'text-white' },
@@ -72,14 +73,13 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
 
         <div className="grid grid-cols-12 gap-0 items-stretch h-[400px]">
           
-          {/* FOTO CON AJUSTE PRO Y VIÑETA */}
+          {/* FOTO CON AJUSTE PRO */}
           <div className="col-span-3 relative border-r border-white/10 overflow-hidden group bg-[#0a0a0a]">
             <img 
               src={profile.headshot_url} 
               alt={profile.last_name} 
               className="w-full h-full object-cover object-top brightness-[0.85] contrast-[1.1] grayscale-[0.2] group-hover:scale-105 group-hover:grayscale-0 transition-all duration-[2000ms] ease-out"
             />
-            {/* Sombra interna para efecto profundidad */}
             <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.7)] pointer-events-none"></div>
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
             
@@ -106,11 +106,8 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
               </div>
 
               {/* RANKING BOX */}
-              <div className="bg-white/[0.03] border border-white/10 p-6 text-center min-w-[150px] shadow-2xl relative overflow-hidden group backdrop-blur-lg">
+              <div className="bg-white/[0.03] border border-white/10 p-6 text-center min-w-[150px] shadow-2xl relative overflow-hidden group backdrop-blur-lg rounded-sm">
                 <div className="absolute top-0 left-0 w-full h-[3px] bg-red-600"></div>
-                <div className="absolute -right-4 -top-4 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
-                  <Target size={80} className="text-white" />
-                </div>
                 <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.4em] mb-2 italic">Live Rank</p>
                 <p className="text-6xl font-black italic text-white tracking-tighter leading-none mb-2">
                   #{profile.live_rank || profile.current_rank}
@@ -144,7 +141,7 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
               ))}
             </div>
 
-            {/* FOOTER DEL HERO */}
+            {/* FOOTER HERO */}
             <div className="flex items-center justify-between pt-8 border-t border-white/10">
                <div className="flex items-center gap-6">
                   <div className="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-sm">
@@ -153,30 +150,22 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
                       Titles: <span className="text-white ml-2 italic">17 Singles</span>
                     </span>
                   </div>
-                  <span className="text-[9px] font-bold text-white/20 uppercase tracking-[0.3em] border-l border-white/10 pl-6">
-                    Coach: <span className="text-white/40 font-black">Fernando Vicente</span>
-                  </span>
                </div>
-               <div className="flex items-center gap-8">
-                 <p className="text-[9px] font-black text-white/10 uppercase tracking-[0.2em] italic">
-                   Last Updated: {profile.updated_at ? new Date(profile.updated_at).toLocaleDateString() : 'N/A'}
-                 </p>
-                 <button 
-                    onClick={() => setActiveTab('titles')}
-                    className="group text-[11px] font-black text-white uppercase tracking-[0.4em] flex items-center gap-3 hover:text-red-500 transition-all"
-                 >
-                    <span>ARCHIVE</span>
-                    <div className="p-1.5 bg-white/5 group-hover:bg-red-600 rounded-sm transition-colors">
-                      <ChevronRight size={14} className="text-white" />
-                    </div>
-                 </button>
-               </div>
+               <button 
+                  onClick={() => setActiveTab('results')}
+                  className="group text-[11px] font-black text-white uppercase tracking-[0.4em] flex items-center gap-3 hover:text-red-500 transition-all"
+               >
+                 <span>MATCH HISTORY</span>
+                 <div className="p-1.5 bg-white/5 group-hover:bg-red-600 rounded-sm transition-colors">
+                   <ChevronRight size={14} className="text-white" />
+                 </div>
+               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* --- NAVBAR REFINADO Y NÍTIDO --- */}
+      {/* --- NAVBAR --- */}
       <div className="max-w-6xl mx-auto bg-black/80 backdrop-blur-md border-x border-white/10 sticky top-0 z-[100] shadow-2xl">
         <div className="flex justify-between items-center px-4 overflow-x-auto no-scrollbar">
           <nav className="flex items-center">
@@ -193,12 +182,8 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
                     {item.icon}
                   </span>
                   <span className="relative z-10">{item.label}</span>
-                  {isActive && (
-                    <div className={`absolute bottom-0 left-0 w-full h-[3px] animate-in slide-in-from-bottom-1 duration-300 ${item.color}`} />
-                  )}
-                  {isActive && (
-                    <div className={`absolute inset-0 opacity-5 blur-lg ${item.color}`} />
-                  )}
+                  {isActive && <div className={`absolute bottom-0 left-0 w-full h-[3px] animate-in slide-in-from-bottom-1 duration-300 ${item.color}`} />}
+                  {isActive && <div className={`absolute inset-0 opacity-5 blur-lg ${item.color}`} />}
                 </button>
               );
             })}
@@ -206,8 +191,7 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
           
           <a 
             href="https://www.atptour.com/en/players/andrey-rublev/re44/overview" 
-            target="_blank" 
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="hidden lg:flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-all border-l border-white/10 pl-8 py-5 group"
           >
             <Globe size={14} className="group-hover:rotate-12 transition-transform" /> 
@@ -216,7 +200,6 @@ const PlayerProfile = ({ activeTab, setActiveTab }) => {
           </a>
         </div>
       </div>
-
     </div>
   );
 };

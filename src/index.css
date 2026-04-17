@@ -1,19 +1,51 @@
 @import "tailwindcss";
 
 body { 
-  /* Este es el fondo claro que querías */
-  @apply bg-slate-200 text-slate-900 antialiased; 
+  /* Fondo base con un tono gris azulado muy sofisticado */
+  @apply bg-[#f1f5f9] text-slate-900 antialiased; 
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
-/* Los puntitos técnicos que le dan el toque pro */
+/* CAPA 1: La Grilla de Ingeniería */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  opacity: 0.2;
+  opacity: 0.4;
   pointer-events: none;
-  background-image: radial-gradient(#64748b 0.8px, transparent 0.8px);
-  background-size: 32px 32px;
+  /* Creamos una cuadrícula de líneas finas en lugar de solo puntos */
+  background-image: 
+    linear-gradient(to right, #cbd5e1 1px, transparent 1px),
+    linear-gradient(to bottom, #cbd5e1 1px, transparent 1px);
+  background-size: 40px 40px;
+  /* Máscara para que la grilla se desvanezca en los bordes */
+  mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
   z-index: 0;
+}
+
+/* CAPA 2: Los Puntos de Precisión (encima de la grilla) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.6;
+  pointer-events: none;
+  background-image: radial-gradient(#94a3b8 1px, transparent 1px);
+  background-size: 80px 80px; /* Puntos más espaciados para no saturar */
+  z-index: 1;
+}
+
+/* CAPA 3: Manchas de Luz (Glows) para dar profundidad */
+.bg-glow {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(225, 29, 72, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(51, 65, 85, 0.05) 0%, transparent 40%);
 }

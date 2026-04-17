@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Zap, TrendingUp, Activity, Trophy, Search } from 'lucide-react';
 
-const PointsProduction = () => {
+const PointsProduction = ({ setActiveTab }) => {
   const [production, setProduction] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,9 +16,6 @@ const PointsProduction = () => {
       if (error) {
         console.error('Error fetching points production:', error);
       } else {
-        // --- LÓGICA DE ÚLTIMO REGISTRO (SIN SUMAR) ---
-        // Esto evita que Barcelona sume +50 +100 y te dé 150. 
-        // Solo agarra el registro más reciente.
         const filtered = (data || []).reduce((acc, current) => {
           const exists = acc.find(item => item.tournament_name === current.tournament_name);
           if (!exists) {
@@ -35,8 +32,21 @@ const PointsProduction = () => {
     fetchProduction();
   }, []);
 
-  // Calculamos el total sobre la lista ya consolidada
   const totalPoints = production.reduce((acc, curr) => acc + curr.points_earned, 0);
+
+  // --- LÓGICA DE NAVEGACIÓN CON MEMORIA DE SCROLL ---
+  const handleTournamentClick = (tournamentName) => {
+    if (setActiveTab) {
+      // 1. Guardamos la posición vertical actual del usuario en píxeles
+      localStorage.setItem('scrollBackPosition', window.scrollY.toString());
+      
+      // 2. Guardamos el torneo destino para que el Timeline haga scroll down
+      localStorage.setItem('targetTournament', tournamentName);
+      
+      // 3. Ejecutamos el cambio de pestaña
+      setActiveTab('results'); 
+    }
+  };
 
   if (loading) return (
     <div className="h-64 bg-slate-100 animate-pulse rounded-sm max-w-5xl mx-auto mt-20 border border-slate-200"></div>
@@ -45,7 +55,7 @@ const PointsProduction = () => {
   return (
     <div className="mt-24 font-sans max-w-5xl mx-auto px-4 lg:px-0 relative">
       
-      {/* --- BARRA DIVISORA DE SECCIÓN --- */}
+      {/* BARRA DIVISORA */}
       <div className="absolute -top-12 left-0 w-full flex items-center gap-4">
         <div className="h-[2px] w-24 bg-red-600"></div>
         <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.6em] whitespace-nowrap">
@@ -54,7 +64,7 @@ const PointsProduction = () => {
         <div className="h-[1px] flex-1 bg-slate-300"></div>
       </div>
 
-      {/* 1. HEADER & TOTAL SCORE (COLOREADOS) */}
+      {/* HEADER & TOTAL SCORE */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div className="flex items-center gap-5">
           <div className="bg-red-600 p-3 shadow-[0_0_20px_rgba(220,38,38,0.3)]" style={{ clipPath: 'polygon(20% 0, 100% 0, 80% 100%, 0% 100%)' }}>
@@ -67,7 +77,6 @@ const PointsProduction = () => {
           </div>
         </div>
         
-        {/* Marcador Total con Color Destacado */}
         <div className="flex flex-col items-end border-r-4 border-red-600 pr-6">
           <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1">Season Accumulation</span>
           <div className="flex items-baseline gap-2">
@@ -79,10 +88,8 @@ const PointsProduction = () => {
         </div>
       </div>
 
-      {/* 2. TABLA / LISTADO */}
+      {/* TABLA / LISTADO */}
       <div className="bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-slate-200 overflow-hidden rounded-sm">
-        
-        {/* SUB-HEADER TÉCNICO */}
         <div className="bg-slate-900 p-3 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
@@ -93,13 +100,14 @@ const PointsProduction = () => {
           <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest">A. Rublev Stats</span>
         </div>
 
-        {/* LISTADO CONSOLIDADO */}
         <div className="divide-y divide-slate-100">
           {production.length > 0 ? (
             production.map((t) => (
-              <div key={t.tournament_name} 
-                   className="group flex items-center p-5 bg-white hover:bg-slate-50/80 transition-all relative overflow-hidden">
-                
+              <div 
+                key={t.tournament_name} 
+                onClick={() => handleTournamentClick(t.tournament_name)}
+                className="group flex items-center p-5 bg-white hover:bg-slate-50/80 transition-all relative overflow-hidden cursor-pointer"
+              >
                 <div className="flex items-center gap-6 flex-1 relative z-10">
                   <div className="w-14 h-14 flex items-center justify-center bg-white border border-slate-100 p-2 shrink-0 group-hover:border-red-600/30 shadow-sm transition-all duration-500">
                     {t.tournament_logo_url ? (
@@ -130,6 +138,7 @@ const PointsProduction = () => {
                   </div>
                 </div>
 
+                {/* Decoración lateral en hover */}
                 <div className="absolute left-0 top-0 w-1.5 h-full bg-transparent group-hover:bg-red-600 transition-colors"></div>
               </div>
             ))
@@ -145,7 +154,6 @@ const PointsProduction = () => {
       <p className="mt-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] text-center border-t border-slate-200 pt-6">
         End of Data Stream <span className="text-red-600 mx-2">●</span> 2026 Analysis
       </p>
-      
     </div>
   );
 };
