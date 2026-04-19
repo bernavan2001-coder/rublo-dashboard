@@ -166,7 +166,7 @@ const SeasonOverview = ({ setActiveTab }) => {
   >
     <Activity size={14} className="text-slate-400 group-hover:text-white" />
     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-900 group-hover:text-white">
-      Match Results
+      Season Results
     </span>
   </button>
 </div>

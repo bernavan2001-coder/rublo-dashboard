@@ -49,3 +49,17 @@ body::after {
     radial-gradient(circle at 10% 10%, rgba(225, 29, 72, 0.03) 0%, transparent 40%),
     radial-gradient(circle at 90% 90%, rgba(51, 65, 85, 0.05) 0%, transparent 40%);
 }
+
+@keyframes scan-line {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.animate-scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: red;
+  box-shadow: 0 0 10px red;
+  animation: scan-line 3s linear infinite;
+}
